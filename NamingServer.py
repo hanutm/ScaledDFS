@@ -2,6 +2,14 @@
 ### Since more than one server can keep file systems, this file creates a class which can be
 ### accessed by specifying different ports
 
+''' To add/improve, 
+	Add exception handling
+	Update server on all methods
+	load names from server
+'''
+
+
+
 import os
 import web ## to operate on web based API (GET/POST methods)
 
@@ -38,8 +46,26 @@ class NamingServer:
 
                 pass
 
+
+
+def update(directory,server, add):
+	##updates the directory for files, and names.
+
+	if directory[-1] = '/':
+		directory = os.path.dirname(directory)	
+
+	if add == True:
+		print('Adding directory to server',directory,server)
+		_folders[directory] = server
+	elif directory in _folders:
+		print('Removing directory from server',directory,server)	
+		del _folders[directory]
+
+	else:
+		print('Directory not accessible (Might not be present)')
+
+
 _config = { 'dbfile' : 'names.db' }
 ## load initial config from each server about the PORT, IP
 
 _names = shelve.open(_config['dbfile'])
-
