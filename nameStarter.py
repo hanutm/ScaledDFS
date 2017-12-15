@@ -1,8 +1,8 @@
 import web
-import nameserver
+import Namingserver 
 
 	
-url = { '(/.*)','nameserver.Nameserver' }
+url = { '(/.*)','NamingServer.NameServer' }
 
 app = web.application(url, globals())
 
