@@ -1,7 +1,9 @@
 ## Utilities for parsing json, and other tasks to be carried out for every transaction
 
 import json
+import os
 
+from contextlib import closing
 from http.client import HTTPConnection
 
 
@@ -47,12 +49,25 @@ def LockFile(path, host, port):
 			print('Cannot grant lock')
 
 	lockID = resp.read()
+	return lockID
 
-def unLock(path, host, port):
+def unLock(path, host, port, lockID):
 	## Unlock file 
-	pass
+	with closing(HTTPConnection(host,port)) as con:
+		con.request('DELETE', path + ('lock_id=') + int(lockID))
+		resp = con.getresponse()
+	
+	if response.status != 200:
+		print('Cannot revoke lock on file', path)
 
 def getServer(path, host, port):
 	## get server details
-	pass
+	with closing(HTTPConnection(host,port)) as con:
+		con.request('GET', path)
+		resp = con.getresponse()
+		status, server = response.status, response.read()
 
+	if status == 200:
+		return server
+
+	return None

@@ -2,12 +2,36 @@
 
 import atexit ## to implement lock closing
 import shelve
+import time
+import random
 
 class LockServer():
 	## Locks file access as per requirements
 
 
-	def GET():
+	def GET(self, path):
+		web.header('Content-Type', 'text/plain; charset=UTF-8")
+		path = str(path)
+		input = web.input(_method = GET)
+
+		if path == '/':
+			a = '/'
+			a += path + locks[path].granted + locks[path].last_used
+			return a for path in sorted(locks)
+		elif path not locks and 'lock_id' not in i:
+			return 'OK'
+		elif 'lock_id' in i:
+			lock = locks.get(path, -1)
+			if int(i['lock_id']) == lock.lock_id:
+				updateLock(path)
+				return 'OK'
+			else:
+				print('LockID unknown')	
+		elif lockExpiry(path):
+			revokLock(path)
+			return 'OK'
+			
+		
 
 	pass
 
@@ -19,33 +43,48 @@ class LockServer():
 
 	pass
 
-def lockExpiry():
+def lockExpiry(path):
+	
+	last_used_time = lock[path].last_used
+	time = time.ctime()
+	time = time[12:-5]
+	if (time - last_used_time) > config['lockTime']:
+		return True
+	else:
+		return False
 
-	pass
+def newLock(path):
 
-def newLock():
+	if path in locks:
+		if lockExpiry(path):
+			print("Already locked")
+	
+	lockID = random.randrange(0,10000)
+	time = time.ctime()
+	time = time[12:-5]
+	
+	lock[path] = Lock(lockID, time)
 
-	pass
-
-def checkNewLock():
-
-	pass
+	return lockID
 
 def updateLock():
 
-	pass
+	pass	
 
-def revokeLock():
+def revokeLock(path):
 
-	pass
+	if path in locks:
+		print('Lock exists')
+	else:
+		Lock(path)
+		return locks[path]
 
-
-_config = { 'dbfile' : 'locks.db',
+config = { 'dbfile' : 'locks.db',
 	    'lock_lifetime' : 60
 	  }
 
 ## loading config data
 
-_locks = shelve.open(_config['dbfile'])
+locks = shelve.open(_config['dbfile'])
 
-atexit.register(lambda: _locks.close())
+atexit.register(lambda: locks.close())

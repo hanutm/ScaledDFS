@@ -7,10 +7,6 @@ def Delete(path, lockID = None):
 	
 	pass
 
-def Rename(path, newPath):
-
-	pass
-
 class File(SpooledTemporaryFile):
 	## Inspect file, its size, store in memory or disk depending on size
 
@@ -92,7 +88,11 @@ def unlink(path):
 
 def rename(path, newPath):
 
-	pass
+	with open(path) as f:
+		with open(newPath, 'w') as newf:
+			newf.write(f.read())
+		
+		## Unlink previous file from server
 
 open = File
 
