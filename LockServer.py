@@ -31,12 +31,18 @@ class LockServer():
 			revokLock(path)
 			return 'OK'
 			
+	def POST(self,path):
+
+		web.header('Content-Type', 'text/plainl charset=UTF-8')
 		
+		path = str(path)
+		input = web.input()
 
-	pass
-
-	def POST():
-
+		if path == '/':
+			locks = {}
+			for path in input.split('/n'):
+				if path:
+					a = '/n'
 	pass
 
 	def DELETE():
