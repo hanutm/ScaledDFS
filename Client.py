@@ -1,8 +1,9 @@
 ### Client side files for each client to Read/Write and modifying files present on the file server
 
+from tempfile import SpooledTemporaryFile
+import utils
 
-
-def Delete(path, lockID = none):
+def Delete(path, lockID = None):
 	
 	pass
 
@@ -10,23 +11,23 @@ def Rename(path, newPath):
 
 	pass
 
-class File(self, path, mode = 'rtc'):
+class File(SpooledTemporaryFile):
 	## Inspect file, its size, store in memory or disk depending on size
 
 	def __init__(self, path, mode = 'rtc'):
 		
 		self.mode = mode
 		self.path = path
-		host,port = utils.get_port(_config['nameserver']
+		host,port = utils.get_port(_config['nameserver'])
 		self.server = utils.getServer(path, host, port)
 	
 		if self.server is None:
 			print('File not found')
 
-		self.modified = ''
+		self.modified = None 
 
 
-	SpooledTemporaryFile.__init__(self, _config['max_size'], mode.replace('c'.''))		
+		SpooledTemporaryFile.__init__(self, _config['max_size'], mode.replace('c',''))		
 
 		host,port = utils.get_port(_config['lockserver'])
 		if utils.Locked(path, host, port):
