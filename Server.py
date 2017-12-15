@@ -1,26 +1,54 @@
 ### File Server for storing files created by different clients
 
+''' to add, exceptional handling '''
+
+import time
+import os.path
+
+from contextlib import closing
+from http.client import HTTPConnection
+
+import utils
+import web
 
 class fileServer():
 	## Holds and shares files
 
 	def GET():
-		pass
+		web.header('Content-Type', 'text/plain; charset=UTF-8')
+		path = local_path(path)
+		web.header('Last-Modified', time.ctime())
+		with open(path) as f:
+			return f.read()
 
 	def POST():
-		pass
+		path = local_path(path)
+		
+		with open(path, 'w') as f:
+			f.write(web.data())
+	
+		web.header('Last-Modified', time.ctime())
 
 	def DELETE():
-		pass
+
+		web.header('Content-Type', 'text/plain; charset=UTF-8')
+
+		os.unlink(local_path(path))
+		return 'OK'
 
 	def HEAD():
-		pass
+	
+		web.header('Content-Type', 'text/plain; charset=UTF-8')
+
+		path = local_path(path)
+		web.header('Last-Modified', time.ctime())
+		return ''
 
 
 def local_path():
 	## Converts path of file to absolute path
-
-	pass
+	return os.path.join(os.getcwd(), config['fsroot'], filepath[1:])
+	
 
 def checkFile():
 	## Checks validity of file and filepath
@@ -34,10 +62,16 @@ def isLocked():
 
 def initFileServer():
 	## Initialises File Server
-	
-	pass
+	host, port = utils.get_port(config['nameserver'])
+	with closing(HTTPConnection(host, port)) as con:
+		data = 'srv='
+		data += config['server']
+		data += '&dirs='
+		data += '/n'
+		data += 'config['directories']'
+		con.request('POST','/',data)
 
-_config = { 'lockserver' : None,
+config = { 'lockserver' : None,
 	    'nameserver' : None,
 	    'directories' : [],
 	    'fsroot' : 'fs/',
@@ -46,4 +80,4 @@ _config = { 'lockserver' : None,
 
 ## load config files from fileserver
 
-initFileServer()
+initfileServer()
