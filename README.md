@@ -12,4 +12,3 @@ The utils pseudo class file has been imported everywhere since it consists of th
 As can be seen, due to time constraints, not all files could be completed, and there might be some methods which are only given in the structure, and not defined completely. I intend to complete these codes once the evaluation is finalised, while trying to improve the code at the same time. 
 
 
-The Readme file couldn't be updated before since the laptop I was working with burned out, and I couldn't get it fixed until recently, due to christmas and new years.
